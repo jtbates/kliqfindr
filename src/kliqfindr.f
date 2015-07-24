@@ -1,4 +1,4 @@
-      PROGRAM KLIQFIND 
+      Subroutine KLIQFINDR
 C     This program is copywritten and may not be reproduced without
 c the expressed written consent of the author, Ken Frank.
 

@@ -1,4 +1,8 @@
-all: doskliq
+all: doskliq kliqfindr
+
+kliqfindr:
+	gfortran -c kliqfindr.f
+	gfortran -shared -o kliqfindr.so kliqfindr.o
 
 doskliq:
 	gfortran doskliq.f -o doskliq
@@ -12,3 +16,4 @@ clean-output:
 
 clean:
 	rm doskliq
+	rm kliqfindr.o kliqfindr.so
