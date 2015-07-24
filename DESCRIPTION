@@ -1,0 +1,7 @@
+Package: kliqfindr
+Type: Package
+Version: 0.1
+Title: KliqueFinder for R
+Description: An R interface to the KliqueFinder algorithm
+Author: Jordan T. Bates
+LazyData: TRUE
