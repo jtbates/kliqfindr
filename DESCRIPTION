@@ -3,5 +3,12 @@ Type: Package
 Version: 0.1
 Title: KliqueFinder for R
 Description: An R interface to the KliqueFinder algorithm
-Author: Jordan T. Bates
+Authors@R: c(
+    person(c("Jordan", "T."), "Bates", role = "cre",
+      comment = "R interface", email = "jtbates@gmail.com"),
+		person(c("Ken", "A."), "Frank", role = "aut", email = "kenfrank@msu.edu",
+		  comment = "Fortran original, https://msu.edu/~kenfrank/resources.htm#KliqueFinder")
+		)
+License: TBD
 LazyData: TRUE
+Suggests: testthat

@@ -1,0 +1,7 @@
+$(SHLIB): doskliq/doskliq
+
+doskliq/doskliq: doskliq/doskliq.f
+	$(FC) doskliq/doskliq.f -o doskliq/doskliq
+
+clean:
+	@rm -f $(OBJECTS)

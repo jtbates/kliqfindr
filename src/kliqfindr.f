@@ -1,4 +1,4 @@
-      Subroutine KLIQFINDR
+      Subroutine KLIQFINDR(maxiter, attachi, datamat, numact, maxwt)
 C     This program is copywritten and may not be reproduced without
 c the expressed written consent of the author, Ken Frank.
 
@@ -107,7 +107,7 @@ c clustering is paired.
 C      Preseed indicates to kmultma2 whether this is a start up seed
 c or a seed during the ascent (only affects output).
 C
-      CHARACTER infile*256,cmdfile*256
+Cx      CHARACTER infile*256,cmdfile*256
 c      character*256 CMNAM@
 C      CHARACTER*24 IDATE
       CHARACTER*8 INDICAT
@@ -116,57 +116,50 @@ c      character*8 DATE@
 c    Infile contains the edgelist of data
 c    idate contains the date, for output.
      
-        common datamat,connect 
+Cx        common datamat,connect 
 C
 C ***************************************************************
 c    setting parameters
        writemul=0
-       attachi=1
+Cx       attachi=1
        initriad=1
-       maxiter=-1
+Cx       maxiter=-1
 c       infile=CMNAM@()
 c       cmdfile=CMNAM@()
-       cmdfile=""
-       infile=""
        write(6,4308) "Welcome to KliqueFinder, software for"
        write(6,4308) "identifying cohesive subgroups."
        write(6,4308) 
 
-       write(6,4308) "Enter the name of the command file"
-       write(6,4308) "Enter 'none' if you want to enter"
-       write(6,4308) "parameters interactively."
-       read(5,*) cmdfile
-
-      if ((cmdfile .ne. "none") .and. (cmdfile .ne. "")) then
-      OPEN(9,file=cmdFILE)
-       read(9,101,end=111) maxiter,attachi
-00111   close(9)
-       end if
-       if (maxiter .lt. 0) then  
-      
-       write(6,4308) "No command file used, enter parameters"
-       write(6,4308) "interactively."
-       WRITE(6,4308) "After How many iterations should the ascent stop" 
-       WRITE(6,4308) "If it has not yet converged?"       
-       WRITE(6,4308) "ENTER AN INTEGER"              
-       READ(5,*) maxiter
-       WRITE(6,4308) "Should isolates be attached after ascent,"
-       WRITE(6,4308) "and then a final ascent executed?"
-       WRITE(6,4308) "ENTER Y OR N"
-       READ (5,*) INDICAT
-        IF ((indicat(1:1) .eq. 'y') .or. 
-     c      (INDICAT(1:1) .EQ. 'Y')) THEN
-        ATTACHI=1
-        ELSE
-        ATTACHI=0
-        END IF
-       write(6,4308)
-       write(6,4308) "Parameters have been written to kliqfind.cmd."   
-       write(6,4308)     
-       end if
-       open(9,file="kliqfind.cmd")
-       write(9,101) maxiter,attachi
-       close(9)
+Cx      if ((cmdfile .ne. "none") .and. (cmdfile .ne. "")) then
+Cx      OPEN(9,file=cmdFILE)
+Cx       read(9,101,end=111) maxiter,attachi
+Cx00111   close(9)
+Cx       end if
+Cx       if (maxiter .lt. 0) then  
+Cx      
+Cx       write(6,4308) "No command file used, enter parameters"
+Cx       write(6,4308) "interactively."
+Cx       WRITE(6,4308) "After How many iterations should the ascent stop" 
+Cx       WRITE(6,4308) "If it has not yet converged?"       
+Cx       WRITE(6,4308) "ENTER AN INTEGER"              
+Cx       READ(5,*) maxiter
+Cx       WRITE(6,4308) "Should isolates be attached after ascent,"
+Cx       WRITE(6,4308) "and then a final ascent executed?"
+Cx       WRITE(6,4308) "ENTER Y OR N"
+Cx       READ (5,*) INDICAT
+Cx        IF ((indicat(1:1) .eq. 'y') .or. 
+Cx     c      (INDICAT(1:1) .EQ. 'Y')) THEN
+Cx        ATTACHI=1
+Cx        ELSE
+Cx        ATTACHI=0
+Cx        END IF
+Cx       write(6,4308)
+Cx       write(6,4308) "Parameters have been written to kliqfind.cmd."   
+Cx       write(6,4308)     
+Cx       end if
+Cx       open(9,file="kliqfind.cmd")
+Cx       write(9,101) maxiter,attachi
+Cx       close(9)
 c     attachi is a parameter.  =1 if you want to attach isolates at end of
 c      run, regardless of whether they improve theta.  0 otherwise.
 c     As isolates are attached program will continue to seek to maximize
@@ -182,73 +175,70 @@ c   initializing arrays
       Group(tactor)=tactor
       useseed(tactor)=0
       attached(tactor)=0
-      Do 00015 tgroup=1,100
-      Datamat(tactor,tgroup)=0
-00015 continue
+Cx      Do 00015 tgroup=1,100
+Cx      Datamat(tactor,tgroup)=0
+Cx00015 continue
 00014 continue
 
 
 c initializing parameters of characterizing the network
 
-        Maxwt=0
-        Numact=0
+Cx        Maxwt=0
+Cx        Numact=0
         Numgroup=0
         pregroup=0
 
 c      Infile=cmnam(1)
-      do 71 while (infile .eq. "")
-      write(6,4308)
-      write(6,4308)
-      write(6,4308) "In a moment I will ask the name of your data"
-      write(6,4308) "file.  Data must be in a list:"
-      write(6,4308) "(chooser, chosen, frequency of exchange)"
-      write(6,4308) "format must be 3I10, meaning each column"
-      write(6,4308) "is 10 integers wide, for example:"
-      write(6,4308) "         1        21         3"
-      write(6,4308) "123456789012345678901234567890"
-      write(6,4308)
-      write(6,4308) "indicates that actor 1 indicates exchanging"
-      write(6,4308) "with actor 21 at a level of 3"
-      write(6,4308) "(the line 1234... should not appear in your"
-      write(6,4308) "file)."
-      write(6,4308)
-      write(6,4308)
-00073 write(6,4308) "Enter the name of your data file:"
-      read(5,*,end=73) infile
-00071 continue
-
-      OPEN(9,file=INFILE)
-
-c      Reading in data, finding maxwt and numact
-
-      DO 00007 I=1,10000
-      READ(9,103,END=10) actor1,actor2,tempconn
-      If ((actor2 .le. 99) .and. (actor1 .le. 99)) then
-c note restrictions on chooser and chosen
-         Datamat(actor1,actor2)=tempconn
-         If (tempconn .gt. Maxwt) then
-          Maxwt=tempconn
-         End if
-         If (actor1 .gt. Numact) then 
-          Numact=actor1
-         End if
-         If (actor2 .gt. Numact) then
-          Numact=actor2
-         End if
-      End if
-c     If (actor2 .le 99) .and. (actor1 .le. 99)
-
-00007 continue
-
-00010 close(9)
+Cx      do 71 while (infile .eq. "")
+Cx      write(6,4308)
+Cx      write(6,4308)
+Cx      write(6,4308) "Data must be in a list:"
+Cx      write(6,4308) "(chooser, chosen, frequency of exchange)"
+Cx      write(6,4308) "format must be 3I10, meaning each column"
+Cx      write(6,4308) "is 10 integers wide, for example:"
+Cx      write(6,4308) "         1        21         3"
+Cx      write(6,4308) "123456789012345678901234567890"
+Cx      write(6,4308)
+Cx      write(6,4308) "indicates that actor 1 indicates exchanging"
+Cx      write(6,4308) "with actor 21 at a level of 3"
+Cx      write(6,4308) "(the line 1234... should not appear in your"
+Cx      write(6,4308) "file)."
+Cx      write(6,4308)
+Cx      write(6,4308)
+Cx00071 continue
+Cx
+Cx      OPEN(9,file=INFILE)
+Cx
+Cxc      Reading in data, finding maxwt and numact
+Cx
+Cx      DO 00007 I=1,10000
+Cx      READ(9,103,END=10) actor1,actor2,tempconn
+Cx      If ((actor2 .le. 99) .and. (actor1 .le. 99)) then
+Cxc note restrictions on chooser and chosen
+Cx         Datamat(actor1,actor2)=tempconn
+Cx         If (tempconn .gt. Maxwt) then
+Cx          Maxwt=tempconn
+Cx         End if
+Cx         If (actor1 .gt. Numact) then 
+Cx          Numact=actor1
+Cx         End if
+Cx         If (actor2 .gt. Numact) then
+Cx          Numact=actor2
+Cx         End if
+Cx      End if
+Cxc     If (actor2 .le 99) .and. (actor1 .le. 99)
+Cx
+Cx00007 continue
+Cx
+Cx00010 close(9)
        
       if (numact .le. 3) then
       write(6,4308) "There are fewer than four actors in your"
       write(6,4308) "data file.  It doesn't make sense to run"
       write(6,4308) "KliqueFinder on such a small data set."
-      write(6,4308) "Are you sure you specified the correct"
-      write(6,4308) "file?"
-      write(6,4308) infile
+Cx      write(6,4308) "Are you sure you specified the correct"
+Cx      write(6,4308) "file?"
+Cx      write(6,4308) infile
       stop
       end if
 
@@ -258,7 +248,7 @@ c removing actors who are disconnected or who are connected
 c to only one other (and therefore must be in the other's
 c subgroup.  Badlist(actor)=1 if actor should be removed.
 
-      call REMOVEO(numact,onbad,tnumact,pair,removed)
+      call REMOVEO(datamat,connect,numact,onbad,tnumact,pair,removed)
 c
 c    Calculating rchoice and iso.
        numseed=0
@@ -288,7 +278,7 @@ c      Identifying first seed by calling kmultma2
        write(6,4308)
        write(6,4308) "processing ..."
        write(6,4308)
-       call KMULTMA2 (numact,useseed,seed,iso,rchoice,
+       call KMULTMA2 (datamat,connect,numact,useseed,seed,iso,rchoice,
      C domul,writemul,preseed)
        preseed=0
 
@@ -370,7 +360,7 @@ c initializing conditions
         numiter=numiter+1
 c ascent identifies the best possible move
          Call ascent
-     C  (change,newgroup,group,numact,
+     C  (datamat,connect,change,newgroup,group,numact,
      C   numgroup,newtheta,cell,marginal,groupn,madechng,maxwt,
      C   doneiso,iso,onbad,attached)
 
@@ -393,13 +383,13 @@ c dyad is dissolved by reassigning one of the members of the dyad.
         if (group(s) .eq. group(change)) then
         found=1
 c opengrp finds an available group.  Output in xgroup
-        call opengrp(groupn,xgroup,numgroup)
+        call opengrp(datamat,connect,groupn,xgroup,numgroup)
 
 c reassign reassigns an actor to a new gorup, and updates marginals
 c and cells of table 1.
 
         Call reassign
-     C  (s,xgroup,group,numact,groupn,marginal,
+     C  (datamat,connect,s,xgroup,group,numact,groupn,marginal,
      c   cell,maxwt,newtheta)
          end if
 c ending on if (group(s) .eq. group(change)) then
@@ -410,7 +400,7 @@ c ending on if (groupn(group(change)) .eq. 3) then
 
 c make the reassignment that improves theta1
         Call reassign
-     C  (change,newgroup,group,numact,groupn,marginal,
+     C  (datamat,connect,change,newgroup,group,numact,groupn,marginal,
      c   cell,maxwt,newtheta)
 
        End if
@@ -441,7 +431,7 @@ c attached before
         IF ((NUMSEED .GT. 2) .AND. (DONEISO .EQ. 0)) THEN
        newtheta=0
 c identify a new seed
-       call KMULTMA2 (numact,useseed,seed,iso,rchoice,
+       call KMULTMA2 (datamat,connect,numact,useseed,seed,iso,rchoice,
      c domul,writemul,preseed)
 
        if ((seed(1) .gt. 0) .and. (seed(2) .gt. 0) .and.
@@ -451,7 +441,7 @@ c reassign members of seed to the group of the first seed actor
         do 16 s=2,3
 
         Call reassign
-     C  (seed(s),group(seed(1)),group,
+     C  (datamat,connect,seed(s),group(seed(1)),group,
      C  numact,groupn,marginal,cell,maxwt,newtheta)
 00016    continue
 
@@ -513,7 +503,7 @@ c        ending on if madechnge .eq. 0
         if (pair(s) .gt. 0) then
         write(3,101) s,pair(s),group(pair(s))
         Call reassign
-     C  (s,group(pair(s)),group,numact,groupn,marginal,
+     C  (datamat,connect,s,group(pair(s)),group,numact,groupn,marginal,
      c   cell,maxwt,newtheta)
         end if
 00191 continue
@@ -564,9 +554,9 @@ c      CALL FDATE(idate)
         
 c      WRITE(3,4308) "Date"
 c      WRITE(3,4308) DATE@()
-      WRITE(3,4308) "Input file:"
-      WRITE(3,4308) INFILE 
-      WRITE(3,4308)
+Cx      WRITE(3,4308) "Input file:"
+Cx      WRITE(3,4308) INFILE 
+Cx      WRITE(3,4308)
       write(3,4308) "This file is called kliqfind.out."
       write(3,4308) 
       write(3,4308) "***********************************************"
@@ -675,8 +665,8 @@ c calculating predicted value of theta1 (see Frank, 1995, p. 39)
 c use predicted value of theta1 to get predicted value for 
 c cell(4) in Table 2.  See Frank, 1995, page 42.
        
-       CALL CONVLAMN(PL,marginal(2),marginal(4),marginal(5),
-     C PALPHA,PBETA,PGAMMA,PDELTA)
+       CALL CONVLAMN(datamat,connect,PL,marginal(2),marginal(4),
+     C marginal(5),PALPHA,PBETA,PGAMMA,PDELTA)
 c plrt is the difference in deviances between
 c model based on predicted value of theta1 and 
 c observed value for theta1
@@ -807,8 +797,8 @@ C       WRITE(3,4308) "ON LINEAR TERMS AND QUADRATIC TERMS WITH "
         write(3,4308) 
        write(3,4308) "This is associated with change in deviance of"
        write(3,4308)
-        CALL   CONVLAMN((PL+.032),marginal(2),marginal(4),marginal(5),
-     C PALPHA,PBETA,PGAMMA,PDELTA)
+        CALL   CONVLAMN(datamat,connect,(PL+.032),marginal(2),
+     C marginal(4),marginal(5),PALPHA,PBETA,PGAMMA,PDELTA)
 
        PLRT=2*(cell(1)*LOG(cell(1)/PALPHA)+
      C cell(2)*LOG(cell(2)/PBETA)+
@@ -895,7 +885,7 @@ c 1995, page 44).
         End
 
          Subroutine reassign
-     C  (change,newgroup,group,numact,groupn,marginal,
+     C  (datamat,connect,change,newgroup,group,numact,groupn,marginal,
      c   cell,maxwt,newtheta)
 c this procedure reassigns actors to a new subgroup and updates 
 c marginals and cells of Table 2
@@ -914,7 +904,7 @@ c       Oldgroup is the current group of the change actor
 c
 c cell, numact,groupn,marginal,maxwt are all defined as in main program
 
-        common datamat,connect 
+Cx        common datamat,connect 
 
        oldgroup=group(change)
 c updating connections to groups -- only for group which changed
@@ -947,7 +937,7 @@ c updating theta and group sizes
       End
 
       Subroutine ascent
-     C (change,newgroup,group,numact,
+     C (datamat,connect,change,newgroup,group,numact,
      C  numgroup,newtheta,cell,marginal,groupn,madechng,
      C  maxwt,doneiso,iso,onbad,attached)
        Real newtheta,ttheta,oldtheta,cell(4),tempcell(4),
@@ -992,7 +982,7 @@ c        Tmarg2 = temporary values of marginal 2
 c
 c setting up base values
 
-        common datamat,connect 
+Cx        common datamat,connect 
         oldchng=change
         Oldtheta=newtheta+.000001
         isotheta=-999999
@@ -1065,7 +1055,7 @@ c change could be made.
           Return
           End
 
-       SUBROUTINE KMULTMA2(SIZE,ONLIST,person,
+       SUBROUTINE KMULTMA2(datamat,connect,SIZE,ONLIST,person,
      c  iso,rchoice,domul,writemul,preseed)
 c this procedure performs a matrix multiplication to identify
 c triads of actors who are connected to each other and common others.
@@ -1082,7 +1072,7 @@ C onlist=useseed.  Person=seed.  Don't ask why.
           REAL WTXPX,WTXXP,BESTTRID,connecto,kdirect
         DOUBLE PRECISION TXPX,TXXP
 
-        common datamat,connect 
+Cx        common datamat,connect 
 
 c initializing seeds.
 
@@ -1233,7 +1223,7 @@ c assigning the best triad to the variable person
 00503  format(3I5,F13.5)
       END
 
-       SUBROUTINE CONVLAMN(PL,M2X,MX2,TOTAL,
+       SUBROUTINE CONVLAMN(datamat,connect,PL,M2X,MX2,TOTAL,
      C ALPHA,BETA,GAMMA,DELTA)
 
        REAL PL,ALPHA,BETA,GAMMA,DELTA,le,
@@ -1250,7 +1240,7 @@ c pl is predicted value of theta1,
 c alpha, beta, gamma, and delta are cells of table 2.
 C see Frank, 1995, page 42.  QA=a, QB=b
 
-        common datamat,connect
+Cx        common datamat,connect
 
        IF ((M2X .GT. 0) .AND. (MX2 .GT. 0) .AND. (TOTAL .GT. 0)) THEN
        MX1=TOTAL-MX2
@@ -1336,13 +1326,13 @@ c Bail out, use marginals!
        RETURN
        END
 
-        subroutine opengrp(groupn,newgroup,numgroup)
+        subroutine opengrp(datamat,connect,groupn,newgroup,numgroup)
         integer groupn(100),newgroup,numgroup,s,datamat(100,100),
      c  connect(100,100)
 c this subgroutine finds the next available (empty) group 
 c newgroup will contain the number of the available group
 
-        common datamat,connect
+Cx        common datamat,connect
 
         s=0
         newgroup=0
@@ -1360,7 +1350,8 @@ c newgroup will contain the number of the available group
         end
 
 
-      SUBROUTINE REMOVEO(OLENGTH,onbad,tnumact,pair,removed)
+      SUBROUTINE REMOVEO(omat,connect,OLENGTH,onbad,tnumact,pair,
+     C removed)
 c this subroutine identifies actors to be removed from
 c the matric because they are connected to zero or
 c only one other.
@@ -1371,7 +1362,7 @@ c are all defined as in main program.
      C removed,madechng,degree,tnumact,pair(100),connect(100,100)
 c appendx will be temporary number of actor on whom
 c i tags along.
-       common omat,connect
+Cx       common omat,connect
 
         removed=0
        tnumact=olength
