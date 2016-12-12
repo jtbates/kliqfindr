@@ -1,6 +1,6 @@
 Package: kliqfindr
 Type: Package
-Version: 0.1
+Version: 0.0.0.9000
 Title: KliqueFinder for R
 Description: An R interface to the KliqueFinder algorithm
 Authors@R: c(
