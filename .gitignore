@@ -2,3 +2,5 @@
 *.so
 .Rproj.user
 .Rhistory
+output/
+/src/doskliq/doskliq

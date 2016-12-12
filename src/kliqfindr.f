@@ -1,4 +1,5 @@
-      Subroutine KLIQFINDR(maxiter, attachi, datamat, numact, maxwt)
+      Subroutine KLIQFINDR(maxiter, attachi, datamat, numact, maxwt,
+     C  group, onbad, pair, groupid)
 C     This program is copywritten and may not be reproduced without
 c the expressed written consent of the author, Ken Frank.
 
