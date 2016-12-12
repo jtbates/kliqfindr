@@ -5,10 +5,10 @@ warnings_are_errors: false
 
 env:
   global:
-      - CRAN: http://cran.rstudio.com
+    - CRAN: http://cran.rstudio.com
 
-      r_packages:
-        - covr
+r_packages:
+  - covr
 
-        after_success:
-          - Rscript -e 'covr::codecov()'
+after_success:
+  - Rscript -e 'covr::codecov()'
