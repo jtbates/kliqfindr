@@ -3,15 +3,7 @@
 #' @return A string representing the path to the doskliq executable
 doskliq_exe_path <- function(){
   exe_name <- switch(Sys.info()[['sysname']], Windows='doskliq.exe', 'doskliq')
-  file.path(system.file(package='kliqfindr'), 'bin', exe_name)
-}
-
-#' Get path to doskliq shell script
-#'
-#' @return A string representing the path to the doskliq shell script
-doskliq_sh_path <- function(){
-  sh_name <- 'doskliq.sh'
-  file.path(system.file(package='kliqfindr'), 'src', 'doskliq', sh_name)
+  return(system.file('bin', exe_name, package='kliqfindr'))
 }
 
 #' Run doskliq executable
