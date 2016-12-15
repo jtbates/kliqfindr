@@ -8,7 +8,13 @@
 #' @param output_path The path to write the output files to
 #'
 #' @return The result list from the KliqueFinder Fortran code
-klique_find <- function(datamat, numact, maxiter=999, attachi=1, output_path='.') {
+klique_find <- function(datamat, numact, maxiter=as.integer(999),
+                        attachi=as.integer(1), output_path='.') {
+  datamat <- check_int(datamat)
+  numact <- check_int(numact)
+  maxiter <- check_int(maxiter)
+  attachi <- check_int(attachi)
+
   wd <- getwd()
   setwd(output_path)
 
@@ -46,3 +52,14 @@ get_plc <- function(res) {
   return(plc)
 }
 
+
+#' Check that input is of type integer; if not, assert that it only contains
+#' whole numbers and convert to integer type
+check_int <- function(input) {
+  if(is.integer(input)) return(input)
+  else {
+    int_input <- as.integer(input)
+    assert_that(all.equal(input, integer_input))
+    return(integer_input)
+  }
+}
