@@ -13,6 +13,7 @@ datamat[as.matrix(test_list[,c(1,2)])] <- test_list[,3]
 numact <- max(test_list[,c(1,2)])
 
 output_path_r <- file.path('output', input_name, 'kliqfindr')
+dir_create_if_not_exists(output_path_r)
 res <- klique_find(datamat, numact, maxiter=maxiter, attachi=attachi,
                    output_path=output_path_r)
 kliqfindr.plc <- get_plc(res)
@@ -23,6 +24,7 @@ writeLines(sprintf("%10i%10i%10i", test_list[,1], test_list[,2], test_list[,3]),
            fwf_input_path)
 
 output_path_dos <- file.path('output', input_name, 'doskliq')
+dir_create_if_not_exists(output_path_dos)
 doskliq_run(input_path, output_path_dos)
 
 doskliq.plc <- read.fwf(file.path(output_path_dos, 'kliqfind.plc'), c(5,5,5))
