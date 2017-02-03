@@ -58,7 +58,8 @@ get_plc <- function(res) {
 check_int <- function(input) {
   if(is.integer(input)) return(input)
   else {
-    int_input <- as.integer(input)
+    integer_input <- input
+    storage.mode(integer_input) <- 'integer'
     assert_that(all.equal(input, integer_input))
     return(integer_input)
   }
