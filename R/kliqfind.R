@@ -60,7 +60,7 @@ check_int <- function(input) {
   else {
     integer_input <- input
     storage.mode(integer_input) <- 'integer'
-    assert_that(all.equal(input, integer_input))
+    stopifnot(all.equal(input, integer_input))
     return(integer_input)
   }
 }
