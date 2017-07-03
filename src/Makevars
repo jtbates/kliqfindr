@@ -1,7 +1,7 @@
-$(SHLIB): doskliq/doskliq
+$(SHLIB): doskliq_exec
 
-doskliq/doskliq: doskliq/doskliq.f
-	$(FC) doskliq/doskliq.f -o doskliq/doskliq
+doskliq_exec: doskliq/doskliq.f
+	$(FC) doskliq/doskliq.f -o ../inst/bin/doskliq
 
 clean:
 	@rm -f $(OBJECTS)
