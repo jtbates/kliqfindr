@@ -12,4 +12,6 @@ Authors@R: c(
 License: TBD
 LazyData: TRUE
 Imports: assertthat
-Suggests: testthat
+Suggests:
+    testthat,
+    covr
