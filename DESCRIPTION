@@ -9,7 +9,7 @@ Authors@R: c(
     person(c("Ken", "A."), "Frank", role = "aut", email = "kenfrank@msu.edu",
       comment = "Fortran original, https://msu.edu/~kenfrank/resources.htm#KliqueFinder")
     )
-License: TBD
+License: GPL-3
 LazyData: TRUE
 Imports: assertthat
 Suggests:
