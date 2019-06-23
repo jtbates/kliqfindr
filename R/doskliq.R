@@ -11,21 +11,14 @@ doskliq_exe_path <- function(){
 #' @param input_path The path to read the input files from
 #' @param output_path The path to write the output files to
 doskliq_run <- function(input_path, output_path){
-  input_path <- normalizePath(input_path)
-  output_path <- normalizePath(output_path)
-  cmd_path <- file.path(input_path, 'test.cmd')
-  list_path <- file.path(input_path, 'test.list')
+  cmd_path <- normalizePath(file.path(input_path, 'test.cmd'))
+  list_path <- normalizePath(file.path(input_path, 'test.list'))
 
+  # execute command in the output directory
   wd <- getwd()
   setwd(output_path)
-  bash_cmd <- paste0('{ echo "\\"',
-                     cmd_path,
-                     '\\""; echo "\\"',
-                     list_path,
-                     '\\""; } | ',
-                     doskliq_exe_path())
-
-  res <- system(bash_cmd)
+  res <- system2(doskliq_exe_path(),
+                 input=paste(cmd_path, list_path, sep='\n'))
 
   setwd(wd)
   return(res)
