@@ -1,6 +1,17 @@
-*.o
-*.so
+# R and Rstudio files
 .Rproj.user
 .Rhistory
+
+# vim temporary files
+*~
+*.swp
+*.swo
+
+# library files
+*.o
+*.so
+*.dll
+
+# directories
 output/
 /src/doskliq/doskliq
