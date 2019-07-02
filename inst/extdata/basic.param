@@ -1,0 +1,278 @@
+   This file is called kliqfind.par.  It contains the parameters that tell 
+ kliquefinder how it should go about clustering the data.  The user should 
+change only the values of the parameters, and not any of the labelling or 
+formatting associated with those values.  Each set of parameters consists 
+of five lines:
+   1)GENERAL HEADING
+   2)the actual fortran format used by kliqfind
+   3)Values of parameters
+   4)Fortran format layout as a guide for placing parameters
+     (corresponds to fortran format)
+   5)labels of parameters (in the appropriate order) 
+
+If the user feels the need, he/she may change the fortran format associated 
+with the parameters.  
+
+The user also has the option to specify each parameter interactively by 
+submitting a null file to kliqfind . Kliqfind can then write a new 
+file for you which saves the parameters in the proper format.  You may then 
+copy this new file to kliqfind.par .
+  Explanations of each parameter appear at the bottom of this file and 
+in the user guide.
+    
+START VALUES
+(I3,1x,I1,1X,I1,1X,I1,1X,F10.5)
+001 1 1 1 4161.41610             
+123x1x1x1x1234.12345
+numdyad dydtriad startgrp,noattach,raseed
+
+MATRIX MULTIPLICATION
+(F10.5,1X,F10.5,1X,I4,1X,I4)
+   1.00000    2.00000 9999    1
+1234.12345x1234.12345x1234x1234
+direct thresht lookt,maxseed
+
+BOUNDARY SPANNING
+(4F10.5)
+    .50000   1.00000    .500      .90000
+1234.123451234.123451234.123451234.12345
+boundval,fixr,blabound,betwmult
+
+PROXIMITY
+(F10.5,1X,F10.5,1X,I1,1X,I1,1X,I1,1X,I1)
+-100.00001    3.10000 0 0 2 3
+1234.12345x1234.12345X1X1X1X1
+nearval,pctile,mutdyad,noneg,halfdyad,dissolve
+
+CONVERGENCE
+(F10.5,1X,I8,1X,I1,1X,I1)
+    .00005     2000 0 1
+1234.12345x12345678x1x1
+stopval,kcount2,quickend,attachi
+
+OBJECTIVE FUNCTION TO BE MAXIMIZED: STRUCTURAL EQUIVALNCE
+(I1,1X,I1,1X,I1)
+0 1 1
+1x1x1
+structeq,network,actrsqr
+
+OBJECTIVE FUNCTION TO BE MAXIMIZED: CONNECTIVITY
+(I2,1X,3(I1,1X),F10.5,1X,F10.5,1X,I1)
+ 5 0 1 0    1.00000    1.00000 1
+12x1x1x1x1234.12345x1234.12345x1
+quantype,squarit,netlev,pergroup,colwt,rowwt,hyperg
+
+MANIPULATION OF DATA
+(I1,1X,I1,1X,I1,1X,I1,1X,I1,1X,I1,1X,I1)
+0 0 0 0 0 0 1
+1x1x1x1x1x1x1
+transpos,reweight,symmat,invert,rectmat,gusemarg,tagalong
+
+EVALUATION
+(I4,1X,F10.5,1X,F10.5,1X,I8,1X,I1,1X,F10.5)
+ 000    0.00000    1.00000        0 1   10.00000
+1234x1234.12345x1234.12345x12345678X1X1234.12345
+neval,baseval,topval,numres,newgrps,hiwteval
+
+ANCHORED MULTIDIMENSIONAL SCALING (BETWEEN GROUPS)
+(F10.5,1X,I4,1X,F10.5,1X,8(I4,1X),F10.5,1X,I4,1X,F10.5,1X,I4,1X,I4,1X,3F10.5)
+   1.00000    2     .2000     1   -1  999    0    1    6    4   30   -2.0000    -3     .15       2    0     .75       .25      1.00000
+1234.12345X1234X1234.12345X1234X1234X1234X1234X1234X1234X1234X1234X1234.12345X1234X1234.12345X1234X1234X1234.123451234.123451234.12345
+IGRATIO,NUMDIM,MINPICT,CENTER,DANCHOR,DANCHOR2,MOVE2,ZSYMMAT,STARTINC,BYINC,MAXINC,KEXP,NORMAL,MINVALG,BYANGLE,BYSCALE,PCTCENG1,PCTCENG2,DRADIUSG
+
+ANCHORED MULTIDIMENSIONAL SCALING (WITHIN GROUPS)
+(8(I4,1X),F10.5,1X,I4,1X,F10.5,1X,I4,1X,I4,1X,3F10.5)
+   1    1  999    0    1    6    4   30   -2.0000    -3     .5        2    0     .75       .25      1.0000
+1234X1234X1234X1234X1234X1234X1234X1234X1234.12345X1234X1234.12345X1234X1234X1234.123451234.123451234.12345
+CENTERI,DANCHORI,DANCH2I,MOVE2I,ZSYMMATI,STARTINI,BYINCI,MAXINCI,KEXPI,NORMALI,MINVALI,BYANGLEI,BYSCALEI,PCTCENI1,PCTCENI2,DRADIUSI
+
+ROTATION OF ACTORS WITHIN GROUPS
+(3(I4,1X))
+  15    2    1
+1234X1234X1234
+RINCREM,MEASURE,EXTREME
+
+
+                 Explanation of Parameters
+
+START VALUES
+numdyad number of dyads to start groups
+dydtriad=1 if you want triads
+        =2 if you want dyads
+startgrp = 1 if you want to use triads to initiate clusters
+           2 if you want a random start (with numdyad groups)
+           3 if you want to start from a priori groups
+           4 * special for simulated data: read in a priori placements *
+noattach = 1 if you want to run the new way, adding one dyad at a time. 
+         = 0 if you want to choose the number of dyads to start with and 
+           attach  only to them.
+raseed = seed used for random assignment of actors to groups
+
+MATRIX MULTIPLICATION
+direct is the empasis to put on direct choices in findtrid
+thresht is the threshold for using a start triad (so that not all triads
+must be looked at
+lookt is the total number of triads to look at, cannot be greater than 9999.
+maxseed is the maximum number of times an actor can be used in a seed group.
+ 
+BOUNDARY SPANNING
+boundval= value above which boundary spanners are flagged for extra print out
+blabound= value above which Blau boundary spanners are flagged for extra 
+          print out
+fixr = the maximum value of the number of connections initiated by a single
+       actor as fixed by the measurement process
+
+PROXIMITY
+nearval= if an actor's closeness to their best group is less than nearval,
+then a new group is started
+pctile is the percentile of measures of closeness that should be used to
+       determine nearval.  I.E., if pctile = .5000, then we use the median of
+       current closeness as the measure of nearval.  a value of greater than 
+       one will keep nearval fixed as input.
+mutdyad = 0 if dyads can be built while only one actor makes connections 
+          across the network
+        = 1 if both actors must make connections to build a dyad
+noneg = 0 if assignments which result in a negative contribution to the 
+          objective function should be sustained
+      = 1 if assignments which result in a negative contribution to the 
+        objective function should be invalidated
+halfdyad =1 if value contribution of dyad to objective function should be 
+          halved when considering removing an actor from the dyad
+         =2 if Dyads cannot be formed at all.
+         =0 otherwise
+dissolve : if an actor is removed from a group of size 'dissolve' then all 
+            other actors in that group are reassigned to their next best 
+            groups.  dissolve =1  if you do not want to reassign actors to 
+            their best groups.
+
+CONVERGENCE
+stopval is the minimum change to end the cluster routine.  
+kcount2 is the number of reassignments to make in a phase of the ascent
+quickend =1 if you don't want to attach isolates or finish ascent -- 
+          you just want output on a priori groups
+attachi =1 if you want to attach isolates at end of iteration and then reascend
+
+OBJECTIVE FUNCTION TO BE MAXIMIZED: STRUCTURAL EQUIVALNCE
+structeq =1 if you want to model via structural equivalence 
+          (based on R-squared)
+network =1 if you want diagonals of matrix to be assigned the largest 
+         off-diagonal value in the matrix
+actrsqr= use actual change in r-square for structural equivalance
+            r-squarechange = groupsize/(groupsize+1) * euclidean distance 
+                                                           from mean
+
+OBJECTIVE FUNCTION TO BE MAXIMIZED: CONNECTIVITY
+quantype =1 if you want to use standardized scores as measure of distance 
+         =2 if you want to use pearson distance --
+            (Observed-Expected)/sqrt(Expected)
+         =3 if you want to use likelihood ratio -- 
+             Observed*log(observed/expected)
+squarit = 1 if you want to square the distance measure, (but preserve the
+             initial sign)
+netlev = 1 if objective fucntion should be evaluated at the network level
+              (only applies to Hubert's compactness which is summed at the 
+                network level)
+pergroup =1 if you want to maximize the average objective function per group
+rowwt = the weight to give to the connections initiated by the actor in
+         assigning the actor to a group
+colwt = the weight to assign to connections directed to an actor in assigning
+        the actor to a group
+hyperg =1 if hypergeometric distribution is assumed, 0 if binomial 
+        distribution is assumed (only affects calculation of variances).
+
+DATA MANIPULATION
+transpos =1 if you want to work with the transpose of the original matrix
+reweight =the value of the highest weight.  All weights higher than reweight
+   will be trimmed to the value of reweight.  Set reweight equal to zero if all
+   weights should remian as input
+symmat is whether or not we want original similarities matrix between 
+  people to be combined and analyzed as a symmetric (1) matrix or not (0).
+invert =1 if your raw data indicate distances as opposed to priximities
+rectmat = 0 if original matrix is square and intact (rows and columns are same
+          elememts
+        = 1 if original matrix is rectangular, and you want to work with X'X (similarity of columns)
+        = 2 if original matrix is rectangular, and you want to work with XX' 
+          (similarity of rows)
+gusemarg =1 if you want to adjust elements from multiplied matrix my row or 
+          column marginal
+         =0 otherwise
+tagalong =1 if actors who are connected to only one other actor in the 
+          network should be removed from analysis and assigned to the subgroup
+          of the actor with whom they are connected
+         =0 if actors who are connected to only one other actor should remain 
+          in the analysis
+         =-1 if actors who are connected to no others in the network should remain in the analysis
+
+EVALUATION
+neval = number of samples to use for evaluating final cluster solution
+baseval is the base percentage of similarity at which to create new solutions 
+        for evluating the cluster solution
+topval   = highest percentage of similarity with final solution in evaluation
+numres = number of times to process through the ascent-evaluation-residual 
+         cycle (one cycle is assumed).
+newgrps = should new groups be created in rival solutions?
+          Note:  one can do a true montecarlo evaluation of a given solution as
+          described by Hubert if one sets quickend=1, baseval=0.000,topval=0.0
+          and newgrps=0
+hiwteval  proportional weight at low end of similarity with final solution
+          compared with high end.  Currently is meaningless -- 6-11-92
+
+ANCHORED MULTIDIMENSIONAL SCALING
+
+igratio = the ratio of distances within subgroups to between subgroups
+numdim = the number of dimensions into which the space should be divided. 
+         The current maximim is 2.
+minpict is the minimum distance in the plot as a percentage of the maximum
+        value.
+Center  = 1 if you want points to be recentered about (0,0) after relative
+          positions have been identified
+Danchor = the position (in order of centrality) of the anchoring actor.
+          A number equal to zero indicates random assignment, a number less 
+          than zero will be converted to positive, but pctiles will be used 
+          instead of the mean to identify centrality (see pctcen),
+          a number larger than the number of actors indicates the last actor.
+Danchor2 = the position (in order of centrality) of the second anchoring actor.
+           A number less than zero will be converted to positive,
+          but pctiles will be used instead of the mean to identify centrality
+          (see pctcen), a number larger than the number of actors indicates 
+          the last actor.
+move2  =1 if the second anchoring actor may be repositioned, 0 if it's angle 
+        remains at 0.
+zsymmat =1 if the priximites should be treated as symmetric, 0 otherwise
+startinc = the number of increments of the angle space for the first
+           iteration
+byinc = the number of increments of the angle space to increase at each 
+        iteration 
+maxinc = the maximal number of increments of the angle space should be
+         divided
+kexp = the exponent in the distances, negative implies take absolute value,
+       0 implies take the log
+normal --  for between groups:
+    =0 if you do not want any normalization
+    =1 if you want to normalize the non-radius distances by the true distance,
+    =2 if you want to take negative logs
+    =3 if you want to take log(hiwt)-log(max distance)
+minval is used if normal is greater than 1.  It indicates the minimum value
+         for a between group matrix element
+byscale =1 if you want to scale distances by the radii of the relevant actors
+        =0 otherwise
+byangle=1 if you want to use angles as basis of plotting instead
+       =0 if you want to use Euclidean distances
+pctcen = indicates the percentile used for obtaining the anchoring groups if danchor is less than 0.
+    if value is positive, kliquefinder will first determine most central
+    subgroup or actor by its degree, and then settle ties based onthe pctcent.
+    if the value is negative, only the pctcent will be used to identify
+    the most central subgroups and actors.
+dradius = the number that you should divide the radius by to balance out stress
+
+ROTATION OF ACTORS WITHIN SUBGROUPS
+
+rincrem = the number of increments to divide the angle space when rotating
+          actors within their subgroup space
+measure = the measure which should be used to determine the rotation -- 
+          1=compactness
+          2=density
+extreme =1 if the radius of an actor to it's anchor should be considered in
+         determining rotation (the larger the radius, the more the influence). 
+        0 otherwise
+

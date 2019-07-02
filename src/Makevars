@@ -1,9 +1,15 @@
 BINDIR := ../inst/bin
 
-$(SHLIB): doskliq_exec
+$(SHLIB): doskliq_exec smacof1b_exec winkliq_exec
 
 doskliq_exec: doskliq/doskliq.f | $(BINDIR)
 	$(FC) doskliq/doskliq.f -o $(BINDIR)/doskliq
+
+smacof1b_exec: smacof1b/*.for | $(BINDIR)
+	$(FC) -fdollar-ok -w smacof1b/*.for -o $(BINDIR)/smacof1b
+
+winkliq_exec: winkliq/*.for | $(BINDIR)
+	$(FC) -fdollar-ok -w winkliq/*.for -o $(BINDIR)/kliqmain
 
 $(BINDIR):
 	mkdir -p $(BINDIR)
