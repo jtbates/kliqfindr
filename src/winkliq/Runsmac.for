@@ -7,7 +7,7 @@ c   Mark Riordan   22 Apr 94
 c
       character *(*) prognm
 C     parameter (prognm='/home5/edstat/frank/bin/smacof1b')
-      parameter (prognm='\kliqfind\smacof1b')
+      parameter (prognm='./smacof1b')
       integer retcod
       call unlink( 'smacdist')
       call unlink( 'coeff')
