@@ -4979,7 +4979,7 @@ C     ******************************************************************DEC00140
      6       NDAT,ND,NDAAT,NPNP,NV,NSY1,NSY2,NSY3,NSY4,N8
       CHARACTER*80 TITLE,FORM1,FORM2
       IDIM = 300000                                                     DEC00160
-      DATA A/300000*0.0/
+      DATA A/3000000*0.0/
       IF (NWORDS.LE.IDIM) GO TO 10                                      DEC00170
          WRITE (6,1000) NWORDS                                          DEC00180
          RETURN                                                         DEC00190
