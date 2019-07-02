@@ -14,4 +14,7 @@
 
 # directories
 output/
-/src/doskliq/doskliq
+/inst/bin/
+
+# test files
+/tests/testthat/input/n16790/test.list
