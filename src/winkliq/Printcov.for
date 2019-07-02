@@ -120,7 +120,7 @@ C         END IF
 00878   CONTINUE
         SKEW=0
         OPEN(56,FILE='CHECKCO')
-        WRITE(56,195) SKEW,ACTG,VAR
+        WRITE(56,195) SKEW,REAL(ACTG),VAR
         CLOSE(56)
         MINV=.0001
         MAXV=999999
