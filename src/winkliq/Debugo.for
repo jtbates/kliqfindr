@@ -1,0 +1,9 @@
+
+      SUBROUTINE DEBUGO(DVAL)
+       INTEGER DVAL
+       IF (DVAL .EQ. 1) THEN 
+        WRITE(33,100) DVAL
+        END IF
+       RETURN
+ 0100   FORMAT('WOULD HAVE STOPPED AT DEBUG ',I3)
+       END

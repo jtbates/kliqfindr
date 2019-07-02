@@ -1,0 +1,39 @@
+
+        SUBROUTINE ZMK(NUMTEACH,NEWMAT,NEWDEPT,OUTCOME,OUTMUL,COUNT)
+        INCLUDE 'PARAM.H'
+        INTEGER NUMTEACH,NEWMAT(MAXKLIQ,MAXKLIQ),NEWDEPT(MAXKLIQ),I,J,
+     C COUNT(5,MAXKLIQ)
+        REAL OUTMUL(5,MAXKLIQ),OUTCOME(MAXKLIQ),ADDON
+        
+        DO 2 I=1,NUMTEACH
+        IF (OUTCOME(I) .NE. -9999) THEN
+          DO 4 J=1,5
+          OUTMUL(J,I)=0
+          COUNT(J,I)=0
+00004      CONTINUE
+       
+        DO 3 J=1,NUMTEACH
+        IF ((I .NE. J) .AND.  (OUTCOME(J) .NE. -9999)) THEN
+        ADDON=NEWMAT(I,J)*OUTCOME(J)
+        COUNT(3,I)=COUNT(3,I)+1
+        OUTMUL(3,I)=OUTMUL(3,I)+ADDON
+        IF (NEWDEPT(I) .EQ. NEWDEPT(J)) THEN
+        IF (NEWMAT(I,J) .EQ. 0) THEN
+        COUNT(4,I)=COUNT(4,I) +1
+        OUTMUL(4,I)=OUTMUL(4,I)+OUTCOME(J)
+         ELSE
+        COUNT(5,I)=COUNT(5,I) +1
+       OUTMUL(5,I)=OUTMUL(5,I)+OUTCOME(J) 
+        END IF
+        COUNT(1,I)=COUNT(1,I) +1
+        OUTMUL(1,I)=OUTMUL(1,I)+ADDON
+        ELSE
+        COUNT(2,I)=COUNT(2,I) +1
+        OUTMUL(2,I)=OUTMUL(2,I)+ADDON
+        END IF
+        END IF
+00003    CONTINUE
+        END IF
+00002     CONTINUE
+        RETURN
+        END

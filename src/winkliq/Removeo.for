@@ -1,0 +1,164 @@
+ 
+C      SUBROUTINE REMOVEO     
+C CALL REMOVEO(INMAT,NUMTEACH,HITLIST,NUMHLIST,DEPART,NEWMAT,
+C     C               NEWDEPT,SUBID,NSUBID)
+
+
+      SUBROUTINE REMOVEO(OMAT,OLENGTH,BADLIST,LBAD,DEPLIST,
+     C NDEPLIST,UTRIAD,OLDID,NEWID,KEEPLIST,PAIRS,PAIRUP,CONVID,
+     C TAGALONG,STRUCTEQ)
+      INCLUDE 'PARAM.H'
+      INTEGER OMAT(MAXKLIQ,MAXKLIQ),OLENGTH,BADLIST(MAXKLIQ),
+     C         DEPLIST(MAXKLIQ),
+     C         LBAD,NDEPLIST(MAXKLIQ),DHAVEIT,APPEND,DEGREE,APPENDX,
+     C         UTRIAD,ONBAD(MAXKLIQ),HAVEWRIT,MADECHNG,COL
+
+       INTEGER HAVEIT,ROW,Z,K,P,P2,Q,KEEPCNT,TAGALONG,
+     C         KEEPLIST(MAXKLIQ),REMOVE,BL,L,OLDID(MAXKLIQ),
+     C         NEWID(MAXKLIQ),PAIRS,PAIRUP(MAXKLIQ,2),CONVID(MAXKLIQ)
+C
+       REAL ZCOMPMAT(MAXKLIQ,MAXKLIQ)
+       INTEGER HUBERT(MAXKLIQ,MAXKLIQ),RESULTM(MAXKLIQ,MAXKLIQ),
+     C ALLGROUP(MAXKLIQ,MAXKLIQ),RNEWMAT(MAXKLIQ,MAXKLIQ),STRUCTEQ,
+     C MAKECHOI
+       REAL BLAUC(MAXKLIQ,MAXKLIQ),DIFF(MAXKLIQ,MAXKLIQ)
+       COMMON ZCOMPMAT,ALLGROUP,HUBERT,RESULTM,RNEWMAT,
+     C BLAUC,DIFF
+
+C       COMMON ZCOMPMAT,ALLGROUP,HUBERT,RESULTM,RNEWMAT
+
+C       OPEN(99,file='oneconn.lst')       
+
+        DO 17 BL=1,OLENGTH
+        ONBAD(BL)=0
+00017    CONTINUE
+
+        DO 16 BL=1,LBAD
+        WRITE(33,237) OLDID(BADLIST(BL)), ' on the hitlist.'
+        ONBAD(BADLIST(BL))=1
+   16   CONTINUE
+
+      DO 12 L=1,OLENGTH
+       IF ((DEPLIST(L) .EQ. 0) .AND. (UTRIAD .EQ. 0) .AND.
+     C  (ONBAD(L) .EQ. 0)) THEN 
+        WRITE(33,237) OLDID(L), ' is in no a priori group'
+         LBAD=LBAD+1
+         ONBAD(L)=1
+         BADLIST(LBAD)=L
+      END IF
+
+   12 CONTINUE
+
+      MADECHNG=1
+      HAVEWRIT=0
+      PAIRS=0
+
+      DO WHILE (MADECHNG .EQ. 1)
+      MADECHNG=0
+      DO 25 ROW=1,OLENGTH
+C       SUMROW(ROW)=0
+C        SUMCOL(ROW)=0
+       DEGREE=0
+       APPEND=OLDID(ROW)
+       APPENDX=ROW
+       IF (ONBAD(ROW) .EQ. 0) THEN
+       MAKECHOI=0
+       DO 26 COL=1,OLENGTH
+        IF (ONBAD(COL) .EQ. 0) THEN
+        IF (OMAT(ROW,COL) .NE. 0) THEN
+        DEGREE=DEGREE+1
+        MAKECHOI=1
+        APPEND=OLDID(COL)
+        APPENDX=COL
+        END IF
+        IF (OMAT(COL,ROW) .NE. 0) THEN
+        DEGREE=DEGREE+1
+        APPEND=OLDID(COL)
+        APPENDX=COL
+        END IF
+C
+C        SUMROW(ROW)=SUMROW(ROW) + OMAT(ROW,COL) 
+C        SUMCOL(ROW) = SUMCOL(ROW) + OMAT(COL,ROW)
+      END IF
+   26 CONTINUE
+
+      IF (((DEGREE .EQ. 0) .AND. (TAGALONG .GE. 0))
+     C  .OR. ((DEGREE .EQ. 1) .AND. (TAGALONG .GT. 0)) 
+     C  .OR. ((MAKECHOI .EQ. 0) .AND. 
+     C      ((STRUCTEQ .EQ. 1) .OR. (TAGALONG .EQ. 2)))) THEN
+       ONBAD(ROW)=1
+       MADECHNG=1
+       LBAD=LBAD+1
+       BADLIST(LBAD)=ROW
+       IF ((DEGREE .EQ. 1) .AND. (TAGALONG .GT. 0)) THEN
+
+       HAVEWRIT=1
+       WRITE(33,237) OLDID(ROW),
+     C ' connected to only one other actor in the
+     c network.  The actor can be considered in the group of ',APPEND
+C       WRITE(99,215) OLDID(ROW),APPEND
+       PAIRS=PAIRS+1
+       PAIRUP(PAIRS,1)=ROW
+       PAIRUP(PAIRS,2)=APPENDX
+       END IF
+       IF (DEGREE .EQ. 0) THEN
+       WRITE(33,237) OLDID(ROW),
+     C  ' connected to no others in the network.'
+       END IF
+       IF ((MAKECHOI .EQ. 0) .AND. (DEGREE .GT. 1)) THEN
+       WRITE(33,237) OLDID(ROW),
+     C  ' initiated no exchanges.  It must be removed because:'
+        IF (STRUCTEQ .EQ. 1) THEN
+        WRITE(33,291) 'This is not allowed under structural equivalence'
+        ELSE
+        WRITE(33,291) 'You specified tagalong=2'
+        END IF
+       END IF
+      END IF
+      END IF
+   25 CONTINUE
+
+      END DO
+
+       IF (HAVEWRIT .EQ. 1) THEN
+       WRITE(33,291) 'The ID''s of actors with only one connection to
+     c the network, and their associate, are listed in ''oneconn.lst'''
+       END IF
+
+      KEEPCNT=0
+      DO 27 K=1,OLENGTH
+       NDEPLIST(K)=0
+       IF (ONBAD(K) .EQ. 0) THEN
+         KEEPCNT=KEEPCNT+1
+         KEEPLIST(KEEPCNT)=K
+       END IF
+   27 CONTINUE
+C      
+C      OPEN(37,file='keeplist.dat')
+      DO 34 ROW=1,KEEPCNT
+      NDEPLIST(ROW)=DEPLIST(KEEPLIST(ROW))
+      NEWID(ROW)=OLDID(KEEPLIST(ROW))
+      CONVID(KEEPLIST(ROW))=ROW
+C       WRITE(37,215) OLDID(KEEPLIST(ROW)), ROW
+       DO 36 COL=1,KEEPCNT
+         RNEWMAT(ROW,COL)=OMAT(KEEPLIST(ROW),KEEPLIST(COL))
+   36 CONTINUE
+C      WRITE(337,215) ROW,KEEPLIST(ROW)
+   34 CONTINUE
+      OLENGTH=KEEPCNT
+C      CLOSE(37)
+C      CLOSE(99)
+      RETURN
+C
+  251 FORMAT(251F1.0)
+  101 FORMAT(f4.3/)   
+  102 FORMAT('CORR V',I3,251(1X,f7.5))
+  103 FORMAT(251(f5.3,1X))
+  104 FORMAT(251(f5.0,1X))
+  105 FORMAT('CORR V0',I2,251(1X,f7.5))
+  215 FORMAT(I5,1X,I3)
+  202 FORMAT(251(I2))
+  237 FORMAT('Removing actor ',I4,' because the actor ',A,I4)
+00291 FORMAT(A)
+
+      END

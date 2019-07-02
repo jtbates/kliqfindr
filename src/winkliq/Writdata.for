@@ -1,0 +1,62 @@
+      
+       SUBROUTINE WRITDATA(INMAT,MAXG,SYMMAT)
+      INCLUDE 'PARAM.H'
+
+       INTEGER BASEI,SYMMAT,MAXJ,MAXG,SI,SJ,STATUS,SYMLNK
+       CHARACTER*32 NAME1/'smac.dat2'/,NAME2/'smac.data'/
+
+       REAL INMAT(MAXGR,MAXGR),TM
+
+       OPEN(62,FILE='smac.data')
+       OPEN(63,FILE='group.dist')
+       REWIND(62)
+      BASEI=SYMMAT+1
+       COUNT=0
+      DO 6263 SI=BASEI,MAXG
+       MAXJ=MAXG
+       IF (SYMMAT .EQ. 1) THEN
+        MAXJ=SI-1
+       END IF
+       DO 6262 SJ=1,MAXJ
+       TM=INMAT(SI,SJ)
+       IF (TM .LT. -99999) THEN
+       TM=-99999
+       END IF
+
+       IF (TM .GT. 99999) THEN
+       TM=99999
+       END IF
+       
+       IF (SI .EQ. SJ) THEN
+       TM=1
+       END IF 
+      WRITE(62,2469) TM
+      COUNT=COUNT+1
+      IF (COUNT .EQ. (MAXG -1)) THEN
+       WRITE(62,2470)
+       COUNT=0
+      END IF 
+      WRITE(63,2480) SI,SJ,TM
+06262  CONTINUE
+       IF (SYMMAT .NE. 1) THEN
+       WRITE(62,2470)
+        END IF
+06263   CONTINUE
+       WRITE(62,6767)
+       REWIND(62) 
+       CLOSE(UNIT=62)
+       CLOSE(63)
+C      CALL SYSTEM('type smac.data')
+       
+
+C       CALL UNLINK(NAME2)
+C       STATUS=SYMLNK(NAME1,NAME2)
+       RETURN
+ 2480   FORMAT(2I10,F10.2)
+ 140  FORMAT(8X,6F12.7)
+ 2469 FORMAT(F9.2$)
+ 2470 FORMAT(F9.2)
+ 6767 FORMAT(20A8)
+ 6768 FORMAT(20A11)
+ 6261  FORMAT(F10.5)
+       END

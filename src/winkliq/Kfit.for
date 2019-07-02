@@ -1,0 +1,62 @@
+
+        SUBROUTINE KFIT(MATLEN,FIT,ODDSRATI)
+      INCLUDE 'PARAM.H'
+       INTEGER I,J
+       REAL FIT(MAXKLIQ),POSSJ,ACTJ,ALPHA,BETA,GAMMA,DELTA,
+     C ODDSRATI,TOTAL,TACTJ
+
+       INTEGER HUBERT(MAXKLIQ,MAXKLIQ),RESULTM(MAXKLIQ,MAXKLIQ),
+     C ALLGROUP(MAXKLIQ,MAXKLIQ),NEWMAT(MAXKLIQ,MAXKLIQ)
+       REAL BLAUC(MAXKLIQ,MAXKLIQ),DIFF(MAXKLIQ,MAXKLIQ),
+     C ZCOMPMAT(MAXKLIQ,MAXKLIQ)
+       COMMON ZCOMPMAT,ALLGROUP,HUBERT,RESULTM,NEWMAT,
+     C BLAUC,DIFF
+
+        TOTAL=MATLEN*(MATLEN-1.0)
+        TACTJ=0
+        XPOSSJ=0
+        XACTJ=0
+       DO 22 I=1,MATLEN
+       POSSJ=0                  
+       ACTJ=0
+       DO 33 J=1,MATLEN
+       IF (RESULTM(I,J) .EQ. 1) THEN
+       TACTJ=TACTJ+1.0
+       END IF
+       IF (HUBERT(I,J) .EQ. 1) THEN
+       POSSJ=POSSJ+1.0
+       IF (RESULTM(I,J) .EQ. 1) THEN
+       ACTJ=ACTJ+1.0
+       END IF
+       END IF
+00033   CONTINUE
+        XACTJ=XACTJ+ACTJ
+        XPOSSJ=XPOSSJ+POSSJ
+        FIT(I)=0
+          IF ((ACTJ .GT. 0) .AND. (POSSJ .GT. 0)) THEN
+         FIT(I)=ACTJ/POSSJ
+          END IF
+00022    CONTINUE
+
+          BETA=TACTJ-XACTJ
+          GAMMA=XPOSSJ-XACTJ
+          ALPHA=TOTAL-BETA-GAMMA-XACTJ
+          IF (BETA .LT. .5) THEN
+          BETA=.5
+          END IF
+          IF (ALPHA .LT. .5) THEN
+          ALPHA=.5
+          END IF
+          IF (GAMMA .LT. .5) THEN
+          GAMMA=.5
+          END IF
+          IF (XACTJ .LT. .5) THEN
+          XACTJ=.5
+          END IF
+
+          ODDSRATI=(XACTJ*ALPHA)/(BETA*GAMMA)
+          IF (ODDSRATI .GT. 9999) THEN
+          ODDSRATI=9999
+          END IF
+          RETURN
+          END

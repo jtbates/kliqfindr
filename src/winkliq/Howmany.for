@@ -1,0 +1,66 @@
+
+
+
+C         CALL HZOWMANY (DMEMBERS,DEPARTN(J),I,NEWMAT,NUMTEACH,
+C     C                  TOTCON)
+
+
+      SUBROUTINE HOWMANY (MEMBERS,KGRPSIZE,INDIV,PATTERN,TOTSIZE,
+     C                  TOTCON,GROUP,WEIGHT,WTB,UWCON,MT,VT)
+C                         I       I                I      I       I   
+C         CALL HOWMANY (DMEMBERS,DEPARTN(GROUP2),THISPER,NEWMAT,NUMTEACH,
+C                           R     I       R     R
+C     C                  STOTCON,GROUP2,TWEIGHT,NOB)
+
+      INCLUDE 'PARAM.H'
+      INTEGER MEMBERS(MAXKLIQ),KGRPSIZE,INDIV,PATTERN(MAXKLIQ,MAXKLIQ),
+     C TOTSIZE,GRCHOICE(MAXKLIQ),K,THISSIZE,OTHERS,NTEACH,I2,J,ML,GROUP
+      REAL GMEANWT(MAXKLIQ),GVARWT(MAXKLIQ),GROUPVAR,GROUPMN,MT,VT,
+     C   TRESULT,TMEAN,TVAR,TOTCON,A,B,WEIGHT,WTB,UWCON
+      REAL RESULT,TA,TB,UWTA,UWTB,UWA,UWB
+       
+       TOTCON=0.0000
+        UWCON=0.000
+        MT=0.00
+      DO 4 I2=1,KGRPSIZE
+        TA=PATTERN(INDIV,MEMBERS(I2))
+        TB=PATTERN(MEMBERS(I2),INDIV)
+           IF (TA .GT. 0) THEN
+         MT=MT+TA
+         UWTA=1
+           ELSE
+         UWTA=0
+         END IF
+
+         IF (TB .GT. 0) THEN
+         UWTB=1
+           ELSE
+         UWTB=0
+         END IF
+        UWA=UWTA*WEIGHT
+        UWB=UWTB*WTB
+        A=TA*WEIGHT
+        B=TB*WTB
+
+        TOTCON=TOTCON+A+B
+         UWCON=UWCON+UWA+UWB
+C         IF ((TOTCON .GT. 999) .OR. (TOTCON .LT. -999)) THEN
+C        WRITE(33,251) INDIV,GROUP,I2,MEMBERS(I2),A,B,TOTCON,WEIGHT,
+C     C WTB,PATTERN(INDIV,MEMBERS(I2)),PATTERN(MEMBERS(I2),INDIV)
+C        END IF
+    4 CONTINUE
+       MT=MT/UWCON
+       VT=0
+       IF (UWCON .GT. 1) THEN
+      DO 44 I2=1,KGRPSIZE
+        TA=PATTERN(INDIV,MEMBERS(I2))
+        IF (TA .GT. 0) THEN
+        VT=VT+(TA-MT)**2
+        END IF
+00044    CONTINUE
+        VT=VT/(UWCON-1.0)
+        END IF
+
+      RETURN
+  251 FORMAT(20(F10.5))
+      END

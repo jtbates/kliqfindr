@@ -1,0 +1,99 @@
+
+       SUBROUTINE WRITPARM(MAXG,SYMMAT,NUMDIM,ANUL)
+       INTEGER MAXG,SYMMAT,NUMDIM,SJ,SI
+       INTEGER DOSMAC,CI,SPARAM(5,10),NPAR(5)
+       REAL ANUL
+
+       CHARACTER*40 FORM(5)
+       CHARACTER*8 OUTFORM
+       INTEGER*2 LMAX
+       OPEN(11,FILE='smac.parm')
+       REWIND(11)
+      SPARAM(2,1)=MAXG
+      SPARAM(2,2)=1
+      SPARAM(2,3)=1
+      IF (SYMMAT .EQ. 1) THEN
+      SPARAM(2,3)=-1
+      END IF
+      SPARAM(2,4)=0
+      SPARAM(2,5)=0
+      SPARAM(2,6)=0
+      SPARAM(2,7)=0
+      DO 59 SJ=1,7
+      SPARAM(3,SJ)=0
+00059  CONTINUE
+       SPARAM(3,1)=2
+       SPARAM(3,3)=2
+       SPARAM(3,5)=1
+       SPARAM(3,6)=1
+       SPARAM(3,7)=1
+       SPARAM(3,8)=3
+       SPARAM(3,9)=8
+        SPARAM(3,10)=0
+       SPARAM(4,1)=NUMDIM
+       SPARAM(4,2)=NUMDIM
+       SPARAM(4,3)=0
+       SPARAM(4,4)=0
+       SPARAM(4,9)=ANUL
+       DO 76 SJ=5,8
+       SPARAM(4,SJ)=0
+00076   CONTINUE
+       SPARAM(5,1)=0
+       SPARAM(5,2)=-2
+       SPARAM(5,3)=0
+       SPARAM(5,4)=2
+       SPARAM(5,5)=0
+
+       NPAR(2)=7
+       NPAR(3)=10
+       NPAR(4)=8
+       NPAR(5)=5
+
+C      FORM(2)='(6I5,F10.1)'
+       FORM(2)='(6I5,I10)'
+       FORM(3)='(10I5)'
+C      FORM(4)='(6I5,2F10.1$)'
+       FORM(4)='(6I5,2I10$)'
+       FORM(5)='(5I5)'
+
+
+      WRITE(11,6768) 'KLIQUEFINDE'
+      DO 85 SI=2,5
+      WRITE(11,FORM(SI)) (SPARAM(SI,SJ) , SJ=1,NPAR(SI))
+      IF (SI .EQ. 4) THEN
+      WRITE(11,6271) ANUL
+      END IF 
+00085  CONTINUE
+       LMAX=MAXG-1
+      IF (LMAX .LT. 10) THEN
+      WRITE(11,6759) '(',LMAX, 'F9.2)'
+      END IF
+      IF ((LMAX .GE. 10) .AND. (LMAX .LE. 99)) THEN
+      WRITE(11,6758) '(',LMAX, 'F9.2)'
+      END IF
+
+      IF ((LMAX .GE. 100) .AND. (LMAX .LE. 999)) THEN
+      WRITE(11,6757) '(',LMAX, 'F9.2)'
+      END IF
+
+      IF ((LMAX .GE. 1000) .AND. (LMAX .LE. 9999)) THEN
+      WRITE(11,6756) '(',LMAX, 'F9.2)'
+      END IF
+
+C      WRITE(11,6767)
+      REWIND(11)
+      CLOSE(11)
+      RETURN
+
+ 140  FORMAT(8X,6F12.7)
+ 2469 FORMAT(F5.2$)
+ 2470 FORMAT(F5.2)
+ 6759  FORMAT(A1,I1,A7)
+ 6758  FORMAT(A1,I2,A7)
+ 6757  FORMAT(A1,I3,A7)
+ 6756  FORMAT(A1,I3,A7)
+ 6767 FORMAT(20A8)
+ 6768 FORMAT(20A11)
+ 6261  FORMAT(F10.5)
+ 6271   FORMAT(F10.1)
+       END
