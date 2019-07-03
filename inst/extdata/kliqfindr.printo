@@ -1,0 +1,54 @@
+430100000000000000000000011010010001002001000
+  1234567890123456789012345678901234567890123
+  0        1         2         3         4
+first two digits remian fixed -- the number of variables to be read in
+
+value of 0 suppresses the output:
+         1 causes the output to print
+
+
+printo     output (all output in "clusters" unless otherwise specified)
+
+1         info for each actor about association with current and best group at each iteration.
+2         Matrix of choices -- according to group structure
+3         matrix of choices -- Actor Order
+4         hubert matrix -- 1 if in same group, actor order
+5         print out compactness info after initializing groups
+6         calculate and print actor X group probabilities in files grpprob.out and grpprob.dat
+7         calculate and print actor X actor probabilities in files persprob.out and persprob.dat
+8         print out all the "HAVE" and "WANT" moves during iterations
+9         calculate and print final groupings for logit analysis in "logit.dat"
+10        print the final solution in matrix form (like the input matrix) into "clus.outmat"
+11        info on raw boundary spanners (in "boundary")
+12        abbreviated boundary spanners -- greater than boundval (in "boundary 2")
+13        output and commmands for MDS scaling of requested Group Associations matrices
+14        output indicating the group placement of each actor in "placements"  (format is 3(f10.5): cluster #, id # as input, group identification)
+15        resids and chi-square from logit fit of the effect of actors being in the same group on the probability of a connection.
+16        Print ucinet matrix for whole network (in ucwn.DAT)
+17        Print ucinet matrix for group associations in ucgc.DAT
+18        Print ucinet matrix for within group connections in (ucgrpxxx.DAT)
+19        Print ucinet vector of group assignments (for Hubert QA)
+20        Table of group blockmodel for structural equivalence
+21        Print out compactness Table and matrices for a priori groups (1=yes, 0=no)
+22        Print initial info about klique finder and printo tables
+23        Print progress about the objective function at each iteration (to the screen, to ?.clusters, and to obfun.dat)
+24        operate in interactive mode, indicating output files and  advancement of the function to the screen
+25        print out final placements and data in list format
+26        give Blau's Measures of groups distance in boundaryb and bound2b
+27        add measures of overall compactness and subgroup compactnesses to end of compmeas.dat and compgrp.dat
+28        measures of centrality
+29        measures of betweenness
+30        Group Associations, Compactness
+31        Group Associations, Sum of Zi
+32        Group Associations, Mean Within Group Connection
+33        Group Associations, Proportion Connections in Group
+34        Write compgrp stuff to files
+35        Actor by Actor listing of weights between actors based on group associations in file called "perxper.?dat"
+36        matrix for creating order for groups, 0 = no order, 1=compactness, 2=zi, 3=density, 4=proportion within
+37        method for comparing matrices to create an order for groups and actors within subgroups.  1= difference, 2=log of ratio, make the value negative to maximize the upper triangular matrix
+38        =1 if you want to kliqfinder to use polar coordinates to place groups and actors within groups in 2 dimensions
+39        =1 if actors within groups should be arranged using polar coordinates -- same options apply
+40        =1 if you want to resort original ID's (because they're greater than max)
+41        =1 if you want to rotate members within subgroups to minimize connections cutting through groups
+42        =1 if you want extra info with choices matrix
+43        =1 if you want distances between people
