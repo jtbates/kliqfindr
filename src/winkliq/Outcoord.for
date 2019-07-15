@@ -37,7 +37,8 @@
       SIXTEEN=16
       SIXTEEN=UNLINK(LINKFILE)
 
-      STATUS=SYMLNK(COORFILE,LINKFILE)
+C! SYMLNK not supported by MINGW; replaced with copy at end of routine
+C      STATUS=SYMLNK(COORFILE,LINKFILE)
 
       INFILE=COORFILE(1:6)
       NDFILE=INFILE  // '.vna'
@@ -117,7 +118,10 @@ C     C SIZE,U
       IF (PDIST .EQ. 1) THEN
       CLOSE(23)
       END IF
-      
+
+C! SYMLNK not supported by MINGW; replaced with copy at end of routine
+      STATUS=SYSTEM('cp ' // COORFILE // ' ' // LINKFILE)
+
       RETURN
       
 00777  FORMAT(A)

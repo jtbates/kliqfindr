@@ -44,7 +44,10 @@ winkliq_run <- function(input_file,
                          overwrite=overwrite)
   res_copy2 <- file.copy(param_file, file.path(working_dir, 'kliqfind.par'),
                          overwrite=overwrite)
-  res_symlink <- file.symlink(smacof1b_exe_path(), working_dir)
+  # TODO? MINGW does not support symlinks. find a symlink solution for Windows?
+  #res_symlink <- file.symlink(smacof1b_exe_path(), working_dir)
+  res_copy3 <- file.copy(smacof1b_exe_path(), working_dir,
+                         overwrite=overwrite)
 
   # execute commands in the working directory
   wd <- getwd()

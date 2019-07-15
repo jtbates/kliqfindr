@@ -1354,7 +1354,9 @@ C       END IF
       LINKFILE='inlist.list'
       SIXTEEN=16
       SIXTEEN=UNLINK(LINKFILE)
-      STATUS=SYMLNK(INFILE,LINKFILE)
+C! SYMLNK not supported by MINGW; replaced with copy
+C     STATUS=SYMLNK(INFILE,LINKFILE)
+      STATUS=SYSTEM('cp ' // INFILE // ' ' // LINKFILE)
 
 C      DANCHOR=1
 C      ZSYMMAT=1
