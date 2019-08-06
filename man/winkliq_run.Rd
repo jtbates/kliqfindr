@@ -22,7 +22,9 @@ winkliq_run(input_file, printo_file = "basic.printo",
 \item{overwrite}{Whether to overwrite input files in working directory}
 }
 \value{
-An error code from system2 (0 for success)
+A list containing the error code from system2 (0 for success),
+        the output directory, and optionally the place file output read in
+        as a data frame
 }
 \description{
 Run winkliq executable

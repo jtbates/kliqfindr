@@ -10,9 +10,12 @@ Authors@R: c(
       comment = "Fortran original, https://msu.edu/~kenfrank/resources.htm#KliqueFinder")
     )
 License: GPL-3
+URL: https://jtbates.github.io/kliqfindr, https://github.com/jtbates/kliqfindr
+BugReports: https://github.com/jtbates/kliqfindr/issues
 LazyData: TRUE
 Imports: assertthat
 Suggests:
-    testthat,
-    covr
+    covr,
+    testthat
 RoxygenNote: 6.1.1
+Encoding: UTF-8

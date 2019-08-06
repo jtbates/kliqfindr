@@ -22,7 +22,9 @@ smacof1b_exe_path <- function(){
 #' @param working_dir The path to the working directory
 #' @param get_place Whether to read the place file
 #' @param overwrite Whether to overwrite input files in working directory
-#' @return An error code from system2 (0 for success)
+#' @return A list containing the error code from system2 (0 for success),
+#'         the output directory, and optionally the place file output read in
+#'         as a data frame
 #' @examples
 #' winkliq_run('stanne.list', 'basic.printo', 'basic.param', get_place=FALSE)
 winkliq_run <- function(input_file,
