@@ -26,9 +26,11 @@ smacof1b_exe_path <- function(){
 #'         the output directory, and optionally the place file output read in
 #'         as a data frame
 #' @examples
-#' winkliq_run('stanne.list', 'basic.printo', 'basic.param', get_place=FALSE)
+#' res <- winkliq_run('stanne.list')
+#' names(res)
+#' head(res$place[,c('actor', 'subgroup')], n=4)
 winkliq_run <- function(input_file,
-                        printo_file='basic.printo', param_file='basic.param',
+                        printo_file='kliqfindr.printo', param_file='basic.param',
                         working_dir=NA, get_place=TRUE, overwrite=TRUE){
   # locate paths
   input_file <- kf_locate_input(input_file)

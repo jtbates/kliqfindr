@@ -4,7 +4,7 @@
 \alias{winkliq_run}
 \title{Run winkliq executable}
 \usage{
-winkliq_run(input_file, printo_file = "basic.printo",
+winkliq_run(input_file, printo_file = "kliqfindr.printo",
   param_file = "basic.param", working_dir = NA, get_place = TRUE,
   overwrite = TRUE)
 }
@@ -30,5 +30,7 @@ A list containing the error code from system2 (0 for success),
 Run winkliq executable
 }
 \examples{
-winkliq_run('stanne.list', 'basic.printo', 'basic.param', get_place=FALSE)
+res <- winkliq_run('stanne.list')
+names(res)
+head(res$place[,c('actor', 'subgroup')], n=4)
 }
