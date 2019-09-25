@@ -32,6 +32,7 @@ This is pre-release software under development and is not intended for general u
         ```
         $ xcode-select --install
         ```
+        Only the Command Line Tools (220MB) are needed. A full install of Xcode (7.1GB) is not necessary.
     2. Install GNU Fortran for MacOS X from https://github.com/fxcoudert/gfortran-for-macOS/releases.
 
 #### Debian-based Linux
