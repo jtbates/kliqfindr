@@ -9,7 +9,7 @@ This is pre-release software under development and is not intended for general u
 
 ## Installation
 
-This package is not on CRAN and does not yet have pre-compiled binaries. You will need to compile the Fortran code it depends on which requires installing command line tools outside of R if you do not already have them. You will need R 3.3.x or later.
+This package is not on CRAN and does not yet have pre-compiled binaries. Installation therefore involves compiling Fortran code from source and requires command line tools outside of R. You will need R 3.3.x or later.
 
 1. Install the command line tools for your operating system.
     1. Windows
