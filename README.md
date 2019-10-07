@@ -35,3 +35,7 @@ This package is not on CRAN and does not yet have pre-compiled binaries. Install
     > devtools::install_github("jtbates/kliqfindr")
     ```
  
+ ### Troubleshooting
+ 
+ More information on troubleshooting installation issues is available [on the wiki](https://github.com/jtbates/kliqfindr/wiki/Troubleshooting-install-issues).
+ 
