@@ -13,12 +13,13 @@ doskliq_exe_path <- function(){
 doskliq_run <- function(input_path, output_path){
   cmd_path <- file.path(input_path, 'test.cmd')
   list_path <- file.path(input_path, 'test.list')
+  file.copy(c(cmd_path, list_path), output_path)
 
   # execute command in the output directory
   wd <- getwd()
   setwd(output_path)
   res <- system2(doskliq_exe_path(),
-                 input=paste(cmd_path, list_path, sep='\n'))
+                 input=c('test.cmd', 'test.list'))
 
   setwd(wd)
   return(res)
