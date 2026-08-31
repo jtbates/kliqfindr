@@ -1340,7 +1340,7 @@ C     *  SUBROUTINES CALLED: RANDU                                     *
 C     *                                                                *
 C     ******************************************************************
       DIMENSION X(NP,ND),CENT(ND)
-      CHARACTER*4 FORM3
+      CHARACTER*4 FORM3(3)
 C     DIMENSION X(NP,ND),CENT(ND),FORM3(1)
 C                                                                      C
       STAND=0.0
@@ -1484,8 +1484,8 @@ C *                                                                *
 C ******************************************************************
       DIMENSION X(NP,ND),DATA(NDAT),B(NP,NP),W(NDAT),DIST(NDAT)
       DIMENSION H1(NP),H2(NP),H3(NP),H4(NP),H5(NP),H6(NP),H7(NP)
-      DIMENSION H8(NP),H9(NP),IND(ND),FORM3(3)
-      CHARACTER*4 FORM3
+      DIMENSION H8(NP),H9(NP),IND(ND)
+      CHARACTER*4 FORM3(3)
       REAL*8 V(NV)
 C------------------------------------------------------------------C
       INO=IABS(INOR)
